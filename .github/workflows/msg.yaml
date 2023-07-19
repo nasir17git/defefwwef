@@ -19,11 +19,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: s3 upload
-        run: |
-          echo "uploading readme to s3"
-          ls -alh
-          aws s3 cp --no-progress ./README.md s3://nasir-owned/230719/
+      # - name: s3 upload
+      #   run: |
+      #     echo "uploading readme to s3"
+      #     ls -alh
+      #     aws s3 cp --no-progress ./README.md s3://nasir-owned/230719/
           
       - name: Post to Slack channel
         id: slack
@@ -33,7 +33,7 @@ jobs:
 
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} 1.${GITHUB_SHA::7} 2.${{ github.sha }} 3.${{ github.sha:77 }}",
               "blocks": [
                 {
                   "type": "section",
