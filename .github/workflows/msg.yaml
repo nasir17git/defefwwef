@@ -14,23 +14,36 @@ jobs:
 
       - name: Post to Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
-
-          payload: |
-            {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                  }
-                }
-              ]
-            }
-
+        uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        # env:
+        #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY }}
+        with:
+          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+          payload: |
+            {
+            	"blocks": [
+            		{
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": "<https://google.com|block 빌더 버전"
+            			}
+            		}
+            	],
+            	"attachments": [
+            		{
+            			"color": "#a63636",
+            			"blocks": [
+            				{
+            					"type": "section",
+            					"text": {
+            						"type": "mrkdwn",
+            						"text": "'미리보기에서는' <https://google.com|되지않지만> 테스트"
+            					}
+            				}
+            			]
+            		}
+            	]
+            }
