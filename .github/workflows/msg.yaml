@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "uploading readme to s3"
           ls -alh
-          aws s3 cp --no-progress ./README.md s3://nasir-owned/230719
+          aws s3 cp --no-progress ./README.md s3://nasir-owned/230719/
           
       - name: Post to Slack channel
         id: slack
