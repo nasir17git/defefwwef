@@ -21,6 +21,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
+      - name: Get Short SHA
+        run: |
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: s3 upload
         run: |
           echo "uploading readme to s3"
@@ -35,7 +39,7 @@ jobs:
 
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 1.5 ${{GITHUB_SHA::7}} 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. $2SHA8",
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. $2SHA8 4. ${{ env.GITHUB_SHA_SHORT}}",
               "attachments": [
                 {
                   "color": "#a63636",
