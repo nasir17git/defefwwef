@@ -16,10 +16,12 @@ jobs:
       - name: Post to Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.23.0
+        # env:
+        #   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY }}
         with:
-          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+          # channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
           payload: |
             {
             	"text": "aaaaaaa",
