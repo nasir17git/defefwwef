@@ -34,7 +34,7 @@ jobs:
 
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} 1.${GITHUB_SHA::7} 2.${{ github.sha }} 4.${{ github.sha.slice(0,7)  }}",
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} 1.${GITHUB_SHA::7} 2.${{ github.sha }}",
               "blocks": [
                 {
                   "type": "section",
