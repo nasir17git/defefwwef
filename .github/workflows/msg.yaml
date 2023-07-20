@@ -25,18 +25,22 @@ jobs:
         run: |
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with: 
-          mysql version: 5.7.12
-          mysql database: lendit_test
-          mysql user: aaa
-          mysql password: aaa
+      # - name: Setup MySQL
+      #   uses: mirromutth/mysql-action@v1.1
+      #   with: 
+      #     mysql version: 5.7.12
+      #     mysql database: lendit_test
+      #     mysql user: aaa
+      #     mysql password: aaa
       - name: test
         run: |
+          sudo service mysql status
+          sudo systemctl status mysql
+          sudo docker image pull mysql:5.7.12
+          sudo docker run -d -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -p 3306:3306 mysql:5.7.12
           until mysql -uroot -h 127.0.0.1 -e 'select version();'; do sleep 1; done
-          mysql -uroot -h 127.0.0.1 -e "show databases;"
-          
+          mysql -uroot -h 127.0.0.1 -e "create database lendit_test;"
+
       - name: Post to Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
