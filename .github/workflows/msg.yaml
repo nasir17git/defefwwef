@@ -33,7 +33,9 @@ jobs:
           mysql user: aaa
           mysql password: aaa
       - name: test
-        run:  mysql -uroot -h 127.0.0.1 -e "show databases;"
+        run: |
+          until mysql -uroot -h 127.0.0.1 -e 'select version();'; do sleep 1; done
+          mysql -uroot -h 127.0.0.1 -e "show databases;"
           
       - name: Post to Slack channel
         id: slack
