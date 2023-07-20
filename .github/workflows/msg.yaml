@@ -38,6 +38,8 @@ jobs:
           sudo docker run -d -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -p 3306:3306 mysql:5.7.12
           until mysql -uroot -h 127.0.0.1 -e 'select version();'; do sleep 1; done
           mysql -uroot -h 127.0.0.1 -e "create database lendit_test;"
+          echo $GITHUB_TOKEN
+          echo ${{ secrets.GITHUB_TOKEN }}
 
       - name: Post to Slack channel
         id: slack
@@ -47,7 +49,7 @@ jobs:
 
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. $2SHA8 4. ${{ env.GITHUB_SHA_SHORT}}",
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. ${{ secrets.GITHUB_TOKEN }} 4. ${{ env.GITHUB_SHA_SHORT}}",
               "attachments": [
                 {
                   "color": "#a63636",
