@@ -25,11 +25,14 @@ jobs:
         run: |
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      - name: s3 upload
-        run: |
-          echo "uploading readme to s3"
-          ls -alh
-          aws s3 cp --no-progress ./README.md s3://nasir-owned/230720/
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with: 
+          mysql version: 5.7.12
+          mysql database: lendit_test
+
+      - name: test
+        run:  mysql -uroot -h 127.0.0.1 -e "show databases;"
           
       - name: Post to Slack channel
         id: slack
