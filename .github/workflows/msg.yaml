@@ -30,7 +30,8 @@ jobs:
         with: 
           mysql version: 5.7.12
           mysql database: lendit_test
-
+          mysql user: aaa
+          mysql password: aaa
       - name: test
         run:  mysql -uroot -h 127.0.0.1 -e "show databases;"
           
