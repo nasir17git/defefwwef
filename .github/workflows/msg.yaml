@@ -20,11 +20,11 @@ jobs:
   notify:
     name: Post to Slack
     runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo@4.2
-        ports:
-          - 27017:27017
+    # services:
+    #   mongodb:
+    #     image: mongo@4.2
+    #     ports:
+    #       - 27017:27017
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -56,7 +56,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: 4.2
       - name: version check
         run: | 
           mongosh
