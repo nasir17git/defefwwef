@@ -1,5 +1,5 @@
 name: Slack Notification
-run-name: 🛠️ 빌드 - 1. ${{ github.ref_name }} 2. ${{ secrets.GITHUB_TOKEN }} 3. by ${{ github.actor }} 
+run-name: 🛠️ 빌드 - 1. ${{ github.ref_name }} 2. ${{ env.GITHUB_TOKEN }} 3. by ${{ github.actor }} 
 
 on:
   push:
