@@ -41,7 +41,7 @@ jobs:
       - name: version check
         run: | 
           echo "1"
-          mongo --version
+
           echo "2"
           mongodb -v
 
