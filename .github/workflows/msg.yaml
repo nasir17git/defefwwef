@@ -60,10 +60,10 @@ jobs:
         uses: supercharge/mongodb-github-action@1.8.0
         with:
           mongodb-version: 4.2
-      - name: version check
-        run: | 
-          mongosh
-          mongo --version
+      # - name: version check
+      #   run: | 
+      #     mongosh
+      #     mongo --version
       - run: npm install
   
       - run: npm test
