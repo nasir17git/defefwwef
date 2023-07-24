@@ -1,49 +1,84 @@
 name: Slack Notification
 
 on:
+  push:
   workflow_dispatch:
-
+    inputs:
+      print_tags:
+        description: 'True to print to STDOUT'
+        required: true
+        type: boolean
+      tags:
+        description: 'Test scenario tags'
+        required: true
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
 jobs:
   notify:
     name: Post to Slack
     runs-on: ubuntu-latest
-
+    env:
+      SHA8: ${GITHUB_SHA::8}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Post to Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        # env:
-        #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY }}
+      - name: AWS login
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
-          payload: |
-            {
-            	"blocks": [
-            		{
-            			"type": "section",
-            			"text": {
-            				"type": "mrkdwn",
-            				"text": "<https://google.com|block 빌더 버전"
-            			}
-            		}
-            	],
-            	"attachments": [
-            		{
-            			"color": "#a63636",
-            			"blocks": [
-            				{
-            					"type": "section",
-            					"text": {
-            						"type": "mrkdwn",
-            						"text": "'미리보기에서는' <https://google.com|되지않지만> 테스트"
-            					}
-            				}
-            			]
-            		}
-            	]
-            }
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Get Short SHA
+        run: |
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      # - name: Setup MySQL
+      #   uses: mirromutth/mysql-action@v1.1
+      #   with: 
+      #     mysql version: 5.7.12
+      #     mysql database: lendit_test
+      #     mysql user: aaa
+      #     mysql password: aaa
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: '4.2'
+
+      - name: version check
+        run: | 
+          mongosh
+          mongo --version
+
+      # - name: Post to Slack channel
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.24.0
+      #   with:
+      #     channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+
+      #     payload: |
+      #       {
+      #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. ${{ secrets.GITHUB_TOKEN }} 4. ${{ env.GITHUB_SHA_SHORT}}",
+      #         "attachments": [
+      #           {
+      #             "color": "#a63636",
+      #             "blocks": [
+      #               {
+      #                 "type": "section",
+      #                 "text": {
+      #                   "type": "mrkdwn",
+      #                   "text": "msg"
+      #                 }
+      #               }
+      #             ]
+      #           }
+      #         ]
+      #       }
+
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
