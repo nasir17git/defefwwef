@@ -1,4 +1,5 @@
 name: Slack Notification
+run-name: 🛠️ 빌드 - 1. ${{ github.ref_name }} 2. ${process.env.AS_MESSAGE} 3. by ${{ github.actor }}
 
 on:
   push:
@@ -61,11 +62,11 @@ jobs:
         with:
           mongodb-version: 4.2
   
-      - name: version check
-        run: | 
-          docker ps -a
-          mongo
-          curl 127.0.0.1:27017
+      # - name: version check
+      #   run: | 
+      #     docker ps -a
+      #     mongo
+      #     curl 127.0.0.1:27017
   
       # - run: npm install
   
