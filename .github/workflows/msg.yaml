@@ -63,6 +63,8 @@ jobs:
   
       - name: version check
         run: | 
+          docker ps -a
+          mongo
           curl 127.0.0.1:27017
   
       # - run: npm install
