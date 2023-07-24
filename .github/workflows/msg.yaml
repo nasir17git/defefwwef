@@ -36,14 +36,11 @@ jobs:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0
         with:
-          mongodb-version: '4.2'
+          mongodb-version: '3.4'
 
       - name: version check
         run: | 
-          echo "1"
-
-          echo "2"
-          mongodb -v
+          mongo --version
 
       # - name: Post to Slack channel
       #   id: slack
