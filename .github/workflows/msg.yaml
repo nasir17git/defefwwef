@@ -20,25 +20,25 @@ jobs:
   notify:
     name: Post to Slack
     runs-on: ubuntu-latest
-    # services:
-    #   mongodb:
-    #     image: mongo@4.2
-    #     ports:
-    #       - 27017:27017
+    services:
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: AWS login
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+      # - name: AWS login
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ap-northeast-2
 
-      - name: Get Short SHA
-        run: |
-          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      # - name: Get Short SHA
+      #   run: |
+      #     echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       # - name: Setup MySQL
       #   uses: mirromutth/mysql-action@v1.1
@@ -52,14 +52,14 @@ jobs:
       #   uses: supercharge/mongodb-github-action@1.8.0
       #   with:
       #     mongodb-version: '4.2'
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.8.0
-        with:
-          mongodb-version: 4.2
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
+      # - name: Start MongoDB
+      #   uses: supercharge/mongodb-github-action@1.8.0
+      #   with:
+      #     mongodb-version: 4.2
   
       - name: version check
         run: | 
