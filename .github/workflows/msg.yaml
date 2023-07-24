@@ -32,39 +32,43 @@ jobs:
       #     mysql database: lendit_test
       #     mysql user: aaa
       #     mysql password: aaa
-      - name: test
-        run: |
-          sudo docker image pull mysql:5.7.12
-          sudo docker run -d -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -p 3306:3306 mysql:5.7.12
-          until mysql -uroot -h 127.0.0.1 -e 'select version();'; do sleep 1; done
-          mysql -uroot -h 127.0.0.1 -e "create database lendit_test;"
-          echo $GITHUB_TOKEN
-          echo ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Post to Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.24.0
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
         with:
-          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+          mongodb-version: '4.2'
 
-          payload: |
-            {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. ${{ secrets.GITHUB_TOKEN }} 4. ${{ env.GITHUB_SHA_SHORT}}",
-              "attachments": [
-                {
-                  "color": "#a63636",
-                  "blocks": [
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "msg"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
+      - name: version check
+        run: | 
+          echo "1"
+          mongo --version
+          echo "2"
+          mongodb -v
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # - name: Post to Slack channel
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.24.0
+      #   with:
+      #     channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+
+      #     payload: |
+      #       {
+      #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. ${{ secrets.GITHUB_TOKEN }} 4. ${{ env.GITHUB_SHA_SHORT}}",
+      #         "attachments": [
+      #           {
+      #             "color": "#a63636",
+      #             "blocks": [
+      #               {
+      #                 "type": "section",
+      #                 "text": {
+      #                   "type": "mrkdwn",
+      #                   "text": "msg"
+      #                 }
+      #               }
+      #             ]
+      #           }
+      #         ]
+      #       }
+
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
