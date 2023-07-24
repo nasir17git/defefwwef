@@ -20,8 +20,11 @@ jobs:
   notify:
     name: Post to Slack
     runs-on: ubuntu-latest
-    env:
-      SHA8: ${GITHUB_SHA::8}
+    services:
+      mongodb:
+        image: mongo@4.2
+        ports:
+          - 27017:27017
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -45,15 +48,24 @@ jobs:
       #     mysql user: aaa
       #     mysql password: aaa
 
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.8.0
+      # - name: Start MongoDB
+      #   uses: supercharge/mongodb-github-action@1.8.0
+      #   with:
+      #     mongodb-version: '4.2'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          mongodb-version: '4.2'
+          node-version: 16.x
 
       - name: version check
         run: | 
           mongosh
           mongo --version
+      - run: npm install
+  
+      - run: npm test
+        env:
+          CI: true
 
       # - name: Post to Slack channel
       #   id: slack
