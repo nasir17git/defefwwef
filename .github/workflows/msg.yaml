@@ -70,7 +70,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "aaa"
+                        "text": "`${{ env.job_emoji }} ${{ inputs.APPLICATION_NAME }}, ${{ github.ref_name }}, ${process.env.AS_WORKFLOW} ${{ job.status }}`.replace("refs/heads/", "")"
                       }
                     },        
                     {
