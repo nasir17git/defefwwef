@@ -64,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          createdAt=$(gh -R ${{ github.event.repository.name }}  run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
+          createdAt=$(gh run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
           echo $createdAt
           usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
           echo $usedSec
