@@ -58,6 +58,17 @@ jobs:
       #   run: | 
       #     mongosh
       #     mongo --version
+
+      - name: time_calculator
+        id: timer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          createdAt=$(gh -R ${{ github.event.repository.name }}  run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
+          echo $createdAt
+          usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
+          echo $usedSec
+
       - name: slack_message_for_master_fail
         id: pre_slack
         run: |
@@ -67,16 +78,10 @@ jobs:
             echo "job_emoji=:x:" >> $GITHUB_ENV
           fi
 
-      - name: time_calculator
-        id: timer
-        run: |
-          createdAt=$(gh -R ${{ github.event.repository.name }}  run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
-          echo $createdAt
-          usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
-          echo $usedSec
-  
+
       - name: Post to Slack channel
         id: slack
+        if: always()
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
