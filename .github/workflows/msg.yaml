@@ -66,6 +66,14 @@ jobs:
           else
             echo "job_emoji=:x:" >> $GITHUB_ENV
           fi
+
+      - name: time_calculator
+        id: timer
+        run: |
+          createdAt=$(gh -R ${{ github.event.repository.name }}  run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
+          echo $createdAt
+          usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
+          echo $usedSec
   
       - name: Post to Slack channel
         id: slack
@@ -74,7 +82,7 @@ jobs:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
           payload: |
             {
-              "text": "${{ env.job_emoji }} <${{ github.event.repository.html_url }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|*${{ env.APPLICATION_NAME }} 빌드 ${{ job.status }}*>",
+              "text": "${{ env.job_emoji }} <${{ github.event.repository.name }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|* 빌드 ${{ job.status }}*>",
               "attachments": [
                 {
                   "color": "${{ steps.pre_slack.outputs.color }}",
