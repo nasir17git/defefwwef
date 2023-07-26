@@ -45,40 +45,30 @@ jobs:
       #     mysql user: aaa
       #     mysql password: aaa
 
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.8.0
-        with:
-          mongodb-version: '4.2'
-
-      - name: version check
-        run: | 
-          mongosh
-          mongo --version
-
-      # - name: Post to Slack channel
-      #   id: slack
-      #   uses: slackapi/slack-github-action@v1.24.0
+      # - name: Start MongoDB
+      #   uses: supercharge/mongodb-github-action@1.8.0
       #   with:
-      #     channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+      #     mongodb-version: '4.2'
 
-      #     payload: |
-      #       {
-      #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n 2.${{ github.sha }} 3.${{ env.SHA8 }} 3.5. ${{ secrets.GITHUB_TOKEN }} 4. ${{ env.GITHUB_SHA_SHORT}}",
-      #         "attachments": [
-      #           {
-      #             "color": "#a63636",
-      #             "blocks": [
-      #               {
-      #                 "type": "section",
-      #                 "text": {
-      #                   "type": "mrkdwn",
-      #                   "text": "msg"
-      #                 }
-      #               }
-      #             ]
-      #           }
-      #         ]
-      #       }
+      # - name: version check
+      #   run: | 
+      #     mongosh
+      #     mongo --version
 
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Post to Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
+
+          payload: |
+            {
+              "attachments": [
+                {
+                  "color": 'warning',
+                }
+              ]
+            }
+
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -1,12 +1,13 @@
 name: Reusable Workflow
 
 on:
-  push:
-  workflow_call:
-    inputs:
-      username:
-        required: true
-        type: string
+  # push:
+  workflow_dispatch:
+  # workflow_call:
+  #   inputs:
+  #     username:
+  #       required: true
+  #       type: string
         
 jobs:
   reusable_workflow_job:
