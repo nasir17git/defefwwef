@@ -1,5 +1,5 @@
 name: Slack Notification
-
+run-name: 🛠️ 빌드 - ${{ github.ref_name }}, ${{ github.event.pull_request.title || github.head_ref }} by ${{ github.actor }}
 on:
   push:
   workflow_dispatch:
