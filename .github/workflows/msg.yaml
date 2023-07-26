@@ -78,7 +78,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "${{ env.job_emoji }}  ,  ${{ env.AS_WORKFLOW }} ,${{ env.AS_MESSAGE }} ,  ${{ job.status }}*"
+                        "text": "${{ env.job_emoji }}  , '${process.env.AS_MESSAGE} ${process.env.AS_COMMIT}' ,  ${{ job.status }}*"
                       }
                     },        
                     {
