@@ -54,7 +54,16 @@ jobs:
       #   run: | 
       #     mongosh
       #     mongo --version
-
+      - name: slack_message_for_master_fail
+        id: pre_slack
+        if: failure()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "job_emoji=:white_check_mark:" >> $GITHUB_ENV
+          else
+            echo "job_emoji=:x:" >> $GITHUB_ENV
+          fi
+  
       - name: Post to Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
@@ -70,7 +79,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "*bold aaa*"
+                        "text": "*`${{ env.job_emoji }} aaa, ${{ github.ref_name }}, ${process.env.AS_WORKFLOW} ${{ job.status }}`*"
                       }
                     },        
                     {
