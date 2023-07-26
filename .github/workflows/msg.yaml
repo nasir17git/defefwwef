@@ -18,7 +18,7 @@ on:
         required: true
 
 env:
-  APPLICATION_NAME: aa
+  APPLICATION_NAME: app_name
 
 jobs:
   notify:
@@ -74,7 +74,7 @@ jobs:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
           payload: |
             {
-              "text": "${{ steps.pre_slack.outputs.job_emoji }} <${{ github.event.repository.html_url }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|*${{ env.APPLICATION_NAME }} 운영 배포 ${{ job.status }}*>",
+              "text": "${{ env.job_emoji }} <${{ github.event.repository.html_url }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|*${{ env.APPLICATION_NAME }} 빌드 ${{ job.status }}*>",
               "attachments": [
                 {
                   "color": "${{ steps.pre_slack.outputs.color }}",
@@ -83,7 +83,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "To `${{ env.APPLICATION_NAME }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ steps.pre_slack.outputs.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }}. ${{ env.failed_slack_message }}"
+                        "text": "To `${{ env.APPLICATION_NAME }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ github.event.head_commit.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }}. ${{ env.failed_slack_message }}"
                       }
                     }
                   ]
