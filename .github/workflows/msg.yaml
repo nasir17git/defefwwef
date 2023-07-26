@@ -64,8 +64,16 @@ jobs:
             {
               "attachments": [
                 {
-                  "color": 'warning',
-                  "text": 'aaa',
+                  "color": "good",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "only"
+                      }
+                    }
+                  ]
                 }
               ]
             }
