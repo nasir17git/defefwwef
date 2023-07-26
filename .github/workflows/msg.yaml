@@ -68,6 +68,8 @@ jobs:
           echo $createdAt
           usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
           echo $usedSec
+          converted_time=$(date -u -d "@$usedSec" +"%Hh %Mm %Ss")
+          echo "converted_time=$converted_time" >> $GITHUB_ENV
 
       - name: slack_message_for_master_fail
         id: pre_slack
@@ -96,7 +98,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "To `${{ env.APPLICATION_NAME }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ github.event.head_commit.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }}. ${{ env.failed_slack_message }}"
+                        "text": "To `${{ env.GH_TOKEN }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ github.event.head_commit.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }} in ${{ env.converted_time }}. ${{ env.failed_slack_message }}"
                       }
                     }
                   ]
