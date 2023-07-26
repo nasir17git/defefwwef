@@ -62,10 +62,19 @@ jobs:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
           payload: |
             {
+              "text": "good",
               "attachments": [
                 {
-                  "color": 'warning',
-                  "text": 'aaa',
+                  "color": "good",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "aaa"
+                      }
+                    }
+                  ]
                 }
               ]
             }
