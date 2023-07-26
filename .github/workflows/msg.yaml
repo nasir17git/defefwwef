@@ -62,14 +62,14 @@ jobs:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
 
         payload: |
-            {
-              "attachments": [
-                {
-                  "color": 'warning',
-                  "text": 'aaa',
-                }
-              ]
-            }
+          {
+            "attachments": [
+              {
+                "color": 'warning',
+                "text": 'aaa',
+              }
+            ]
+          }
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
