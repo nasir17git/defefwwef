@@ -72,13 +72,13 @@ jobs:
             {
               "attachments": [
                 {
-                  "color": "good",
+                  "color": "success",
                   "blocks": [
                     {
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "${{ env.job_emoji }}  ,  ${process.env.AS_WORKFLOW} ,  ${{ job.status }}*"
+                        "text": "${{ env.job_emoji }}  ,  ${{ env.AS_WORKFLOW }} ,${{ env.AS_MESSAGE }} ,  ${{ job.status }}*"
                       }
                     },        
                     {
