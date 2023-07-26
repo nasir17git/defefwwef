@@ -67,10 +67,10 @@ jobs:
                   "color": "good",
                   "blocks": [
                     {
-                      "type": "header",
+                      "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "asdasdasasd"
+                        "text": "aaa"
                       }
                     },        
                     {
