@@ -56,7 +56,6 @@ jobs:
       #     mongo --version
       - name: slack_message_for_master_fail
         id: pre_slack
-        if: failure()
         run: |
           if [[ "${{ job.status }}" == "success" ]]; then
             echo "job_emoji=:white_check_mark:" >> $GITHUB_ENV
@@ -79,7 +78,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "*`${{ env.job_emoji }} aaa, ${{ github.ref_name }}, ${process.env.AS_WORKFLOW} ${{ job.status }}`*"
+                        "text": "${{ env.job_emoji }}  ,  ${process.env.AS_WORKFLOW} ,  ${{ job.status }}*"
                       }
                     },        
                     {
