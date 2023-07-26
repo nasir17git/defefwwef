@@ -60,16 +60,14 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
-
-        payload: |
-          {
-            "attachments": [
-              {
-                "color": 'warning',
-                "text": 'aaa',
-              }
-            ]
-          }
-
+          payload: |
+            {
+              "attachments": [
+                {
+                  "color": 'warning',
+                  "text": 'aaa',
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
