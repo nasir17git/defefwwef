@@ -19,7 +19,7 @@ on:
 
 env:
   APPLICATION_NAME: app_name
-  VALUES: false
+  VALUES: true
 
 jobs:
   notify:
