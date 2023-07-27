@@ -8,17 +8,10 @@ on:
         description: 'True to print to STDOUT'
         required: true
         type: boolean
-      tags:
-        description: 'Test scenario tags'
-        required: true
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
 
 env:
   APPLICATION_NAME: app_name
+  VALUES: false
 
 jobs:
   notify:
@@ -38,6 +31,7 @@ jobs:
       #     aws-region: ap-northeast-2
 
       - name: Get Short SHA
+        if: ${{ inputs.print_tags }}
         run: |
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
@@ -58,6 +52,20 @@ jobs:
       #   run: | 
       #     mongosh
       #     mongo --version
+
+      - name: time_calculator
+        id: timer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo ${{ env.VALUES }}
+          createdAt=$(gh run list --json databaseId,createdAt --jq ".[]|select(.databaseId==${{ github.run_id }})|.createdAt")
+          echo $createdAt
+          usedSec=$(( `date +%s` - `date -d "$createdAt" +%s`  ))
+          echo $usedSec
+          converted_time=$(date -u -d "@$usedSec" +"%Hh %Mm %Ss")
+          echo "converted_time=$converted_time" >> $GITHUB_ENV
+
       - name: slack_message_for_master_fail
         id: pre_slack
         run: |
@@ -66,15 +74,17 @@ jobs:
           else
             echo "job_emoji=:x:" >> $GITHUB_ENV
           fi
-  
+
+
       - name: Post to Slack channel
         id: slack
+        if: always()
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: 'C05J50BRRB3'  # Replace with your Slack channel ID or name
           payload: |
             {
-              "text": "${{ env.job_emoji }} <${{ github.event.repository.html_url }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|*${{ env.APPLICATION_NAME }} 빌드 ${{ job.status }}*>",
+              "text": "${{ env.job_emoji }} <${{ github.event.repository.name }}|*${{ env.APPLICATION_NAME }}*>, <${{ github.event.repository.html_url }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>, <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|* 빌드 ${{ job.status }}*>",
               "attachments": [
                 {
                   "color": "${{ steps.pre_slack.outputs.color }}",
@@ -83,7 +93,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "To `${{ env.APPLICATION_NAME }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ github.event.head_commit.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }}. ${{ env.failed_slack_message }}"
+                        "text": "To `${{ env.GH_TOKEN }}` '<${{ github.event.repository.html_url }}/commits/${{ github.sha }}|${{ github.event.head_commit.message }} ${{ env.GITHUB_SHA_SHORT }}>' by ${{ github.actor }} in ${{ env.converted_time }}. ${{ env.failed_slack_message }}"
                       }
                     }
                   ]
