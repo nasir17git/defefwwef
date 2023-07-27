@@ -38,7 +38,7 @@ jobs:
       #     aws-region: ap-northeast-2
 
       - name: Get Short SHA
-        if: ${{ env.VALUES }} == true
+        if: ${{ env.VALUES }}
         run: |
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
